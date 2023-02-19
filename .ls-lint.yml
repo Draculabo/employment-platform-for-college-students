@@ -1,0 +1,6 @@
+ls:
+  /{packages}/*:
+    .dir: kebab-case | regex:__[a-z0-9]+__
+    .ts: camelCase | PascalCase
+ignore:
+  - node_modules

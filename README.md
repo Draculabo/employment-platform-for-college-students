@@ -1,55 +1,112 @@
-# markdown-resume
-一款纯前端编写的 `markdown` 简历制作工具，可以把你编写的简历转换为 `PDF`，支持多种模板，你想要的这里都有.
+<h1 align="center">
+  <a href="https://github.com/Draculabo/boom">
+    <!-- Please provide path to your logo here --> 
+  </a>
+</h1>
+<div align="center">
+  A Vue.js 3 UI Library
+  <br />
+  <a href="https://github.com/Draculabo/boom/issues/new?assignees=&labels=bug&template=01_BUG_REPORT.md&title=bug%3A+">Report a Bug</a>
+  ·
+  <a href="https://github.com/Draculabo/boom/issues/new?assignees=&labels=enhancement&template=02_FEATURE_REQUEST.md&title=feat%3A+">Request a Feature</a>
+  .
+  <a href="https://github.com/Draculabo/boom/issues/new?assignees=&labels=question&template=04_SUPPORT_QUESTION.md&title=support%3A+">Ask a Question</a>
+</div>
+<div align="center">
+</div>
 
-[Github Page 简历编写地址](https://acmenlei.github.io/markdown-resume-to-pdf/dist/)
+<details open="open">
+<summary>Table of Contents</summary>
 
-[Gitee Page 简历编写地址](http://codeleilei.gitee.io/markdown2pdf/)
+- [About](#about)
+  - [Built With](#built-with)
+- [Getting Started](#getting-started)
+  - [Prerequisites](#prerequisites)
+  - [Installation](#installation)
+- [Usage](#usage)
+- [Roadmap](#roadmap)
+- [Support](#support)
+- [Project assistance](#project-assistance)
+- [Contributing](#contributing)
+- [Authors & contributors](#authors--contributors)
+- [Security](#security)
+- [License](#license)
+- [Acknowledgements](#acknowledgements)
 
-# effect
-以下是编辑界面的效果图
-![resume editor page](https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/c7627440f4334084955fb7a8ce7b2e0b~tplv-k3u1fbpfcp-watermark.image?)
+</details>
 
-# syntax
-因为原生的`Markdown`语法编写出来的简历排版过于单一，所以在此基础上，我扩展了几种**布局语法**，在简历编写的过程中你可能会用到它，如下.
-## Flex 布局
-```md
-::: start
-content...
-:::
-content...
-:::
-content...
-::: end
+---
+
+## About
+
+>  For learning only, not for commercial use.
+
+### Built With
+
+> - vue3
+> - typescript 
+> - vite3
+> - vitepress
+> - sass
+
+## Getting Started
+
+### Prerequisites
+
+### Installation
+
 ```
-上面的语法将会被转化为下面的`HTML`结构
-```html
-<div class="flex-layout">
-  <div class="flex-layout-item">content...</div>
-  <div class="flex-layout-item">content...</div>
-  <div class="flex-layout-item">content...</div>
-<div>
+pnpm install
 ```
-## Head 布局
-如果你需要针对个人信息栏做一些特殊处理，我提供了 Head 布局，同样你只需要包裹需要渲染的内容即可.
-```md
-::: headStart
-content....
-::: headStart
+
+## Usage
+
 ```
-上面的语法将会被转化为下面的`HTML`结构
-```html
-<div class="head-layout">
-  content....
-<div>
+pnpm --filter boom-ui dev
 ```
-## icon
-为了美化简历，我提供了内置图标，你可以通过以下语法进行使用.
-```md
-icon:github 
-```
-上面的语法将会被转化为下面的`HTML`结构
-```html
-<i class="iconfont icon-github"></i>
-```
-# contribution
-目前的模板比较少，欢迎提 `PR` 贡献你觉得好看的模板给我，非常感谢
+
+
+
+## Roadmap
+
+See the [open issues](https://github.com/Draculabo/boom/issues) for a list of proposed features (and known issues).
+
+- [Top Feature Requests](https://github.com/Draculabo/boom/issues?q=label%3Aenhancement+is%3Aopen+sort%3Areactions-%2B1-desc) (Add your votes using the 👍 reaction)
+- [Top Bugs](https://github.com/Draculabo/boom/issues?q=is%3Aissue+is%3Aopen+label%3Abug+sort%3Areactions-%2B1-desc) (Add your votes using the 👍 reaction)
+- [Newest Bugs](https://github.com/Draculabo/boom/issues?q=is%3Aopen+is%3Aissue+label%3Abug)
+
+## Support
+
+Reach out to the maintainer at one of the following places:
+
+- [GitHub issues](https://github.com/Draculabo/boom/issues/new?assignees=&labels=question&template=04_SUPPORT_QUESTION.md&title=support%3A+)
+- Contact options listed on [this GitHub profile](https://github.com/Draculabo)
+
+## Project assistance
+
+If you want to say **thank you** or/and support active development of boom:
+
+- Add a [GitHub Star](https://github.com/Draculabo/boom) to the project.
+- Tweet about the boom.
+- Write interesting articles about the project on [Dev.to](https://dev.to/), [Medium](https://medium.com/) or your personal blog.
+
+Together, we can make boom **better**!
+
+## Contributing
+
+First off, thanks for taking the time to contribute! Contributions are what make the open-source community such an amazing place to learn, inspire, and create. Any contributions you make will benefit everybody else and are **greatly appreciated**.
+
+
+Please read [our contribution guidelines](CONTRIBUTING.md), and thank you for being involved!
+
+## Authors & contributors
+
+The original setup of this repository is by [Alexey Potapov](https://github.com/Draculabo).
+
+For a full list of all authors and contributors, see [the contributors page](https://github.com/Draculabo/boom/contributors).
+
+## License
+
+This project is licensed under the **MIT license**.
+
+See [LICENSE](LICENSE) for more information.

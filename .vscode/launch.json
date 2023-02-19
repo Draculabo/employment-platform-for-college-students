@@ -1,0 +1,45 @@
+{
+  "configurations": [
+    {
+      "name": "debug project",
+      "request": "launch",
+      "runtimeArgs": [
+        "--filter",
+        "backend",
+        "start:node"
+      ],
+      // node --inspect-brk ./vite --debug
+      // "inspect": "node --inspect-brk ./node_modules/.bin/vite --debug lxyDebug"
+      "console": "integratedTerminal",
+      "runtimeExecutable": "pnpm",
+      "skipFiles": [],
+      "resolveSourceMapLocations": [
+        "${workspaceFolder}/**",
+        "!**/node_modules/**"
+      ],
+      "type": "node"
+    },
+    {
+      "name": "debug by ts",
+      "program": "src/index.ts",
+      "request": "launch",
+      "runtimeExecutable": "node",
+      "cwd": "${workspaceFolder}/packages/backend/",
+      "runtimeArgs": [
+        // "--nolazy",
+        // "-r",
+        "ts-node/register",
+        // "TS_NODE_DEBUG=true",
+        // "--inspect-brk",
+        // "/node_modules/.bin/vite",
+        // "--debug"
+      ],
+      "internalConsoleOptions": "openOnSessionStart",
+      "console": "integratedTerminal",
+      "skipFiles": [
+        "<node_internals>/**"
+      ],
+      "type": "node"
+    }
+  ]
+}
