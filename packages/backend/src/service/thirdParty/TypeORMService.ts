@@ -10,6 +10,22 @@ import ArticleModel from '../../model/article/article';
 import CommentModel from '../../model/article/comment';
 import { loggerServer } from '../../logger';
 import { parseError } from '../../logger/ParseError';
+import { CloudStorageConfigsModel } from '@/model/cloudStorage/CloudStorageConfigs';
+import { CloudStorageFilesModel } from '@/model/cloudStorage/CloudStorageFiles';
+import { CloudStorageUserFilesModel } from '@/model/cloudStorage/CloudStorageUserFiles';
+import GroupModel from '@/model/group/group';
+import { groupUserDAO } from '@/v2/dao';
+import GroupUserModel from '@/model/group/groupUser';
+import RoleModel from '@/model/group/role';
+import RoleUserModel from '@/model/group/roleUser';
+import MessageModel from '@/model/message/message';
+import { OAuthInfosModel } from '@/model/oauth/oauth-infos';
+import { OAuthSecretsModel } from '@/model/oauth/oauth-secrets';
+import { OAuthUsersModel } from '@/model/oauth/oauth-users';
+import UserPhoneModel from '@/model/user/phone';
+import SubjectStudentModel from '@/model/user/SubjectStudent';
+import UniversityStudentModel from '@/model/user/universityStudent';
+import UserUniversityModel from '@/model/user/userUniversity';
 
 export const dataSource = new DataSource({
   type: 'mysql',
@@ -19,15 +35,36 @@ export const dataSource = new DataSource({
   database: MySQL.db,
   port: MySQL.port,
   entities: [
+    // user
     UserModel,
+    UserPhoneModel,
+    WechatUserModel,
+    UserUniversityModel,
+    // university
     UniversityModel,
+    UniversityStudentModel,
     StudentModel,
     SubjectModel,
+    SubjectStudentModel,
     UserModel,
-    WechatUserModel,
     ArticleCommentOperatorModel,
     ArticleModel,
     CommentModel,
+    CloudStorageConfigsModel,
+    CloudStorageFilesModel,
+    CloudStorageUserFilesModel,
+    // group
+    GroupModel,
+    GroupUserModel,
+    // role
+    RoleModel,
+    RoleUserModel,
+    // message
+    MessageModel,
+    // oauth
+    OAuthInfosModel,
+    OAuthSecretsModel,
+    OAuthUsersModel,
   ],
   extra: {
     connectionLimit: isTest ? 50 : 10,

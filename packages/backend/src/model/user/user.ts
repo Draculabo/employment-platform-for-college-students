@@ -55,9 +55,7 @@ export default class UserModel extends Content {
     length: 50,
   })
   phone: string;
-  @ManyToMany(() => UniversityModel)
-  @JoinTable()
-  universities: UniversityModel[];
+  @Column()
   work_city: string;
   @OneToMany(() => UserModel, (user) => user.user_uuid)
   followings: UserModel[];

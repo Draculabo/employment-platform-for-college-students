@@ -5,6 +5,7 @@ import UserModel from './user';
   name: 'student',
 })
 export default class StudentModel extends Content {
+  @Column()
   student_id: string;
   @Column({
     length: 50,
@@ -15,6 +16,6 @@ export default class StudentModel extends Content {
     precision: 3,
   })
   graduation_time: Date;
-  @ManyToOne(() => UserModel, (user) => user.user_uuid)
-  user_id: number;
+  @Column()
+  user_id: string;
 }

@@ -1,4 +1,4 @@
-import { Entity, ManyToOne } from 'typeorm';
+import { Column, Entity, ManyToOne } from 'typeorm';
 import { Content } from '../common';
 import UserModel from '../user/user';
 
@@ -6,9 +6,10 @@ import UserModel from '../user/user';
   name: 'comment',
 })
 export default class CommentModel extends Content {
+  @Column()
   comment_id: string;
-  @ManyToOne(() => UserModel, (user) => user.user_uuid)
+  @Column()
   user_id: string;
+  @Column()
   content: string;
-  // artcle_id:
 }

@@ -6,11 +6,15 @@ import { ArticleType } from '@/constants/enums';
   name: 'article',
 })
 export default class ArticleModel extends Content {
+  @Column()
   article_id: string;
+  @Column()
   title: string;
+  @Column()
   content: string;
-  @ManyToOne(() => UserModel, (user) => user.user_uuid)
+  @Column()
   user_id: string;
+  @Column()
   share_number: number;
   @Column({
     type: 'enum',
