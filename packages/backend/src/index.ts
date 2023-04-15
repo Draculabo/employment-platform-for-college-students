@@ -1,6 +1,4 @@
-import 'reflect-metadata';
-import { join } from 'path';
-import AutoLoad, { AutoloadPluginOptions } from '@fastify/autoload';
+// import 'reflect-metadata';
 import cookie from '@fastify/cookie';
 import cors from '@fastify/cors';
 import fastify, { FastifyInstance, FastifyPluginAsync } from 'fastify';
@@ -25,7 +23,7 @@ import { Type } from '@sinclair/typebox';
 import { ServerResponse } from 'http';
 import { ajvSelfPlugin } from './plugins/Ajv';
 import { fastifySwagger } from './plugins/fastify/swagger';
-import { isNil } from 'lodash';
+import eta from 'eta';
 const app = async (server: FastifyInstance) => {
   server.setErrorHandler((err, request, reply) => {
     if (err.validation) {
@@ -36,7 +34,6 @@ const app = async (server: FastifyInstance) => {
       return;
     }
     loggerServer.error('request unexpected interruption', parseError(err));
-    debugger;
     console.log(err);
 
     // if (!request.notAutoHandle) {
@@ -66,7 +63,7 @@ const app = async (server: FastifyInstance) => {
         // 返回模板
         server.register(pointOfView, {
           engine: {
-            eta: require('eta'),
+            eta,
           },
         }),
         server.register(fastifySwagger),
@@ -74,6 +71,7 @@ const app = async (server: FastifyInstance) => {
         server.register(cors, {
           methods: ['GET', 'POST', 'OPTIONS'],
           allowedHeaders: ['Content-Type', 'Authorization', 'x-request-id', 'x-session-id'],
+          credentials: true,
           maxAge: 100,
         }),
         server.register(formBody),

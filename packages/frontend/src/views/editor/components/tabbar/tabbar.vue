@@ -4,6 +4,7 @@ import { Codemirror } from 'vue-codemirror';
 import { cssLanguage } from '@codemirror/lang-css';
 import { marks } from './constant';
 import { step, setStep, useAvatar, usePrimaryBGColor, useCustomFont, useCustomCSS, usePrimaryColor, useAutoOnePage } from './hook';
+import { useMarkdownContent, useResumeType, useReviewResume } from '../../hook';
 
 const emits = defineEmits(['upload-avatar']);
 const props = defineProps<{ resumeProps: { content: string; resumeType: string } }>();
@@ -14,7 +15,10 @@ const { color, setColor } = usePrimaryColor(props.resumeProps.resumeType);
 const { fontOptions, font, setFont } = useCustomFont(props.resumeProps.resumeType);
 const { setAvatar } = useAvatar(emits);
 const { primaryColor, setPrimaryColor } = usePrimaryBGColor(props.resumeProps.resumeType);
+const { content: reviewContent, reviewResume } = useReviewResume();
 
+const { resumeType } = useResumeType();
+const { content } = useMarkdownContent(resumeType);
 const extentions = [cssLanguage];
 </script>
 
@@ -22,6 +26,11 @@ const extentions = [cssLanguage];
   <div class="operator">
     <el-slider size="small" class="slider" :marks="marks" v-model="step" @change="setStep" :step="10" show-stops />
     <div class="operator-level2">
+      <el-popover title="点评结果" width="700" placement="bottom" trigger="click" :content="reviewContent">
+        <template #reference>
+          <button class="btn custom_css operator-item" @click="() => reviewResume(content)">简历点评</button>
+        </template>
+      </el-popover>
       <el-tooltip content="上传前请确保你想上传的位置在编辑器中存在 ![个人头像](...) 此关键字">
         <label for="upload-avatar" class="btn upload_avatar operator-item">上传证件照</label>
       </el-tooltip>

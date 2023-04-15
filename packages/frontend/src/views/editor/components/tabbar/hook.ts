@@ -1,4 +1,4 @@
-import { getLocalStorage, removeLocalStorage, setLocalStorage } from '@/common/hooks/useLcoaStoage';
+import { getLocalStorage, removeLocalStorage, setLocalStorage } from '@/common/hooks/useLcoalStorage';
 import { warningMessage } from '@/common/message';
 import { createDIV, createStyle, query, removeHeadStyle, Heap, optimalizing, Optimalizing, OptimalizingItem } from '@/common/utils';
 import { getPrimaryBGColor, getPrimaryColor } from '@/templates/config';
@@ -79,7 +79,7 @@ export function usePrimaryBGColor(resumeType: string) {
     initialColor = getPrimaryBGColor(resumeType);
   const primaryColor = ref(get(cacheKey) ? (get(cacheKey) as string) : initialColor);
 
-  function setPrimaryColor(color: string) {
+  function setPrimaryColor(color: string | null) {
     if (!color) {
       primaryColor.value = initialColor;
       color = initialColor;

@@ -1,16 +1,20 @@
-<script setup lang='ts'>
-defineProps<{ flag: boolean }>()
+<script setup lang="ts">
+import { ref } from 'vue';
+
+const props = defineProps<{ flag: boolean }>();
+const status = ref(props.flag);
+defineEmits(['close']);
 </script>
 
 <template>
-  <el-drawer v-model="flag" size="400" :with-header="false" close-on-press-escape>
-    <h2>有问题请加微信反馈，谢谢配合！</h2>
-    <img width="400" src="/wechat.jpeg" alt="我的微信">
+  <el-drawer v-model="$props.flag" size="400" :with-header="false" close-on-press-escape @close="$emit('close')">
+    <slot />
   </el-drawer>
 </template>
 
 <style lang="scss" scoped>
-h2, img {
+h2,
+img {
   margin-top: 30px;
   text-align: center;
 }

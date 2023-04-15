@@ -1,6 +1,5 @@
 import ArticleModel from '@/model/article/article';
 import CommentModel from '@/model/article/comment';
-import { ConfigType } from '@/v2/dao';
 import { optionalConfigSchema } from '@/v2/dao/type';
 import { Type } from '@sinclair/typebox';
 import { Static } from '@sinclair/typebox';
@@ -22,14 +21,16 @@ export const updateCommentSchema = {
 export const insertCommentSchema = {
   body: Type.Object({
     content: Type.String(),
-    user_id: Type.String(),
+    user_id: Type.Optional(Type.String()),
+    article_id: Type.String(),
+    comment_by: Type.Optional(Type.String()),
   }),
 };
 
 export const deleteCommentSchema = {
   body: Type.Object({
-    comment_id: Type.String(),
-    user_id: Type.String(),
-    article_id: Type.String(),
+    comment_id: Type.Optional(Type.String()),
+    user_id: Type.Optional(Type.String()),
+    article_id: Type.Optional(Type.String()),
   }),
 };

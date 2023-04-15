@@ -10,7 +10,6 @@ export enum ErrorCode {
   RequestSignatureIncorrect, // request signature incorrect
   NonCompliant, // non compliant
   UnsupportedOperation, // operation not supported
-
   CustomNotFound,
 
   UserNotFound = 400000, // user not found
@@ -47,4 +46,6 @@ export enum ErrorCode {
   OAuthUUIDNotFound = 130000, // oauth uuid not found
   OAuthClientIDNotFound, // oauth client id not found
   OAuthSecretUUIDNotFound, // oauth secret uuid not found
+
+  UnknownError = 99999,
 }

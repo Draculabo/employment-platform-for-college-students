@@ -6,11 +6,11 @@
   </router-view>
 </template>
 <script setup lang="ts">
-import AOS from "aos";
-import "aos/dist/aos.css"
-import { onMounted } from "vue";
+import AOS from 'aos';
+import 'aos/dist/aos.css';
+import { onMounted } from 'vue';
 
-onMounted(() => AOS.init())
+onMounted(() => AOS.init());
 </script>
 <style>
 * {

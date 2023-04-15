@@ -1,169 +1,165 @@
-import { OSSAbstract } from "../../service-locator/service/oss-abstract";
-import path from "path";
-import { aliOSSClient } from "./ali-oss-client";
-import { createLoggerService } from "../../../logger";
-import { StorageService } from "../../../constants/Config";
-import crypto from "crypto";
-import { FError } from "../../../error/ControllerError";
-import dayjs from "dayjs";
-import { ErrorCode } from "@/error/ErrorCode";
+import { OSSAbstract } from '../../service-locator/service/oss-abstract';
+import path from 'path';
+import { aliOSSClient } from './ali-oss-client';
+import { createLoggerService } from '../../../logger';
+import { StorageService } from '../../../constants/Config';
+import crypto from 'crypto';
+import { FError } from '../../../error/ControllerError';
+import dayjs from 'dayjs';
+import { ErrorCode } from '@/error/ErrorCode';
 
 export class AliOSSService extends OSSAbstract {
-    private readonly logger = createLoggerService<"AliOSS">({
-        serviceName: "AliOSS",
-        ids: this.ids,
+  private readonly logger = createLoggerService<'AliOSS'>({
+    serviceName: 'AliOSS',
+    ids: this.ids,
+  });
+
+  public readonly domain = `https://${StorageService.oss.bucket}.${StorageService.oss.endpoint}`;
+
+  public constructor(private readonly ids: IDS) {
+    super();
+  }
+
+  public async exists(filePath: string): Promise<boolean> {
+    try {
+      await aliOSSClient.head(filePath);
+      return true;
+    } catch {
+      return false;
+    }
+  }
+
+  public async assertExists(filePath: string): Promise<void> {
+    const result = await this.exists(filePath);
+
+    if (!result) {
+      this.logger.info('oss file not found', {
+        AliOSS: {
+          filePath,
+        },
+      });
+      throw new FError(ErrorCode.FileNotFound);
+    }
+  }
+
+  public async remove(fileList: string | string[]): Promise<void> {
+    this.logger.debug('remove file', {
+      AliOSS: {
+        removeFileList: Array.isArray(fileList) ? fileList.join(', ') : fileList,
+      },
     });
 
-    public readonly domain = `https://${StorageService.oss.bucket}.${StorageService.oss.endpoint}`;
+    if (!Array.isArray(fileList)) {
+      const result = await aliOSSClient.delete(this.removeDomain(fileList));
 
-    public constructor(private readonly ids: IDS) {
-        super();
+      this.logger.debug('remove file done', {
+        AliOSS: {
+          removeFile: fileList,
+          removeStatus: result.res.status,
+        },
+      });
+      return;
     }
 
-    public async exists(filePath: string): Promise<boolean> {
-        try {
-            await aliOSSClient.head(filePath);
-            return true;
-        } catch {
-            return false;
-        }
+    const list = fileList.map((file) => this.removeDomain(file));
+
+    await aliOSSClient.deleteMulti(list);
+
+    const newOSSFilePathList: string[] = [];
+
+    for (const filePath of list) {
+      const suffix = path.extname(filePath);
+      const fileUUID = path.basename(filePath, suffix);
+      const fileName = `${fileUUID}${suffix}`;
+
+      // old: PREFIX/UUID.png
+      // new: PREFIX/2021-10/12/UUID/UUID.png
+      if (filePath.endsWith(`${fileUUID}/${fileName}`)) {
+        newOSSFilePathList.push(filePath.substring(0, filePath.length - fileName.length));
+      }
     }
 
-    public async assertExists(filePath: string): Promise<void> {
-        const result = await this.exists(filePath);
-
-        if (!result) {
-            this.logger.info("oss file not found", {
-                AliOSS: {
-                    filePath,
-                },
-            });
-            throw new FError(ErrorCode.FileNotFound);
-        }
+    if (newOSSFilePathList.length !== 0) {
+      this.logger.debug('will remove directory', {
+        AliOSS: {
+          newOSSFilePathList: newOSSFilePathList.join(', '),
+        },
+      });
+    } else {
+      this.logger.debug('not remove directory');
     }
 
-    public async remove(fileList: string | string[]): Promise<void> {
-        this.logger.debug("remove file", {
-            AliOSS: {
-                removeFileList: Array.isArray(fileList) ? fileList.join(", ") : fileList,
-            },
-        });
+    for (const directory of newOSSFilePathList) {
+      await this.recursionRemove(directory);
+    }
+  }
 
-        if (!Array.isArray(fileList)) {
-            const result = await aliOSSClient.delete(this.removeDomain(fileList));
+  public async recursionRemove(directory: string, marker?: string): Promise<void> {
+    const files = await aliOSSClient.list(
+      {
+        prefix: directory,
+        marker: marker,
+        'max-keys': 500,
+      },
+      {}
+    );
 
-            this.logger.debug("remove file done", {
-                AliOSS: {
-                    removeFile: fileList,
-                    removeStatus: result.res.status,
-                },
-            });
-            return;
-        }
-
-        const list = fileList.map(file => this.removeDomain(file));
-
-        await aliOSSClient.deleteMulti(list);
-
-        const newOSSFilePathList: string[] = [];
-
-        for (const filePath of list) {
-            const suffix = path.extname(filePath);
-            const fileUUID = path.basename(filePath, suffix);
-            const fileName = `${fileUUID}${suffix}`;
-
-            // old: PREFIX/UUID.png
-            // new: PREFIX/2021-10/12/UUID/UUID.png
-            if (filePath.endsWith(`${fileUUID}/${fileName}`)) {
-                newOSSFilePathList.push(filePath.substring(0, filePath.length - fileName.length));
-            }
-        }
-
-        if (newOSSFilePathList.length !== 0) {
-            this.logger.debug("will remove directory", {
-                AliOSS: {
-                    newOSSFilePathList: newOSSFilePathList.join(", "),
-                },
-            });
-        } else {
-            this.logger.debug("not remove directory");
-        }
-
-        for (const directory of newOSSFilePathList) {
-            await this.recursionRemove(directory);
-        }
+    if (files.objects && files.objects.length !== 0) {
+      const names = files.objects.map((file) => file.name);
+      this.logger.debug('remove files path', {
+        AliOSS: {
+          removeFilesPath: names.join(', '),
+        },
+      });
+      await aliOSSClient.deleteMulti(names);
     }
 
-    public async recursionRemove(directory: string, marker?: string): Promise<void> {
-        const files = await aliOSSClient.list(
-            {
-                prefix: directory,
-                marker: marker,
-                "max-keys": 500,
-            },
-            {},
-        );
-
-        if (files.objects && files.objects.length !== 0) {
-            const names = files.objects.map(file => file.name);
-            this.logger.debug("remove files path", {
-                AliOSS: {
-                    removeFilesPath: names.join(", "),
-                },
-            });
-            await aliOSSClient.deleteMulti(names);
-        }
-
-        if (!files.isTruncated) {
-            return;
-        }
-
-        await this.recursionRemove(directory, files.nextMarker);
+    if (!files.isTruncated) {
+      return;
     }
 
-    public async rename(filePath: string, newFileName: string): Promise<void> {
-        await aliOSSClient.copy(filePath, filePath, {
-            headers: {
-                "Content-Disposition": AliOSSService.toDispositionFileNameEncode(newFileName),
-            },
-        });
-    }
+    await this.recursionRemove(directory, files.nextMarker);
+  }
 
-    public policyTemplate(
-        fileName: string,
-        filePath: string,
-        fileSize: number,
-        expiration = 60 * 2,
-    ): {
-        policy: string;
-        signature: string;
-    } {
-        const policyString = JSON.stringify({
-            expiration: dayjs().add(expiration, "minutes").toString(),
-            conditions: [
-                {
-                    bucket: StorageService.oss.bucket,
-                },
-                ["content-length-range", fileSize, fileSize],
-                ["eq", "$key", filePath],
-                ["eq", "$Content-Disposition", AliOSSService.toDispositionFileNameEncode(fileName)],
-            ],
-        });
+  public async rename(filePath: string, newFileName: string): Promise<void> {
+    await aliOSSClient.copy(filePath, filePath, {
+      headers: {
+        'Content-Disposition': AliOSSService.toDispositionFileNameEncode(newFileName),
+      },
+    });
+  }
 
-        const policy = Buffer.from(policyString).toString("base64");
-        const signature = crypto
-            .createHmac("sha1", StorageService.oss.accessKeySecret)
-            .update(policy)
-            .digest("base64");
+  public policyTemplate(
+    fileName: string,
+    filePath: string,
+    fileSize: number,
+    expiration = 60 * 2
+  ): {
+    policy: string;
+    signature: string;
+  } {
+    const policyString = JSON.stringify({
+      expiration: dayjs().add(expiration, 'minutes').toISOString(),
+      conditions: [
+        {
+          bucket: StorageService.oss.bucket,
+        },
+        ['content-length-range', fileSize, fileSize],
+        ['eq', '$key', filePath],
+        ['eq', '$Content-Disposition', AliOSSService.toDispositionFileNameEncode(fileName)],
+      ],
+    });
 
-        return {
-            policy,
-            signature,
-        };
-    }
+    const policy = Buffer.from(policyString).toString('base64');
+    const signature = crypto.createHmac('sha1', StorageService.oss.accessKeySecret).update(policy).digest('base64');
+    return {
+      policy,
+      signature,
+    };
+  }
 
-    private static toDispositionFileNameEncode(str: string): string {
-        const encodeFileName = encodeURIComponent(str);
-        return `attachment; filename="${encodeFileName}"; filename*=UTF-8''${encodeFileName}`;
-    }
+  private static toDispositionFileNameEncode(str: string): string {
+    const encodeFileName = encodeURIComponent(str);
+    return `attachment; filename="${encodeFileName}"; filename*=UTF-8''${encodeFileName}`;
+  }
 }

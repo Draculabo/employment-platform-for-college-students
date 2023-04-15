@@ -96,7 +96,6 @@ const errorToResp = (error: Error): Response => {
       code: error.errorCode,
     };
   } else {
-    debugger;
     return {
       status: Status.Failed,
       code: ErrorCode.CurrentProcessFailed,

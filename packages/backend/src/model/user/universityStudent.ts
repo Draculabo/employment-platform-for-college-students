@@ -9,4 +9,6 @@ export default class UniversityStudentModel extends Content {
   university_id: string;
   @Column()
   student_id: string;
+  @Column()
+  user_id: string;
 }

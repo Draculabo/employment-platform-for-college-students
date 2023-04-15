@@ -10,7 +10,9 @@ export default class ArticleModel extends Content {
   article_id: string;
   @Column()
   title: string;
-  @Column()
+  @Column({
+    type: 'text',
+  })
   content: string;
   @Column()
   user_id: string;
@@ -22,4 +24,8 @@ export default class ArticleModel extends Content {
     default: ArticleType.Chat,
   })
   article_type: ArticleType;
+  @Column({
+    type: 'simple-array',
+  })
+  comments: string[];
 }

@@ -23,4 +23,8 @@ export abstract class Content {
 
   @VersionColumn()
   version: number;
+  @Column({
+    default: false,
+  })
+  is_delete: boolean;
 }

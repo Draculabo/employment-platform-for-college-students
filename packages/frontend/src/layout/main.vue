@@ -1,10 +1,10 @@
-<script setup lang='ts'>
-import Header from "./header/header.vue"
-import Footer from "./footer.vue"
+<script setup lang="ts">
+import { useRoute } from 'vue-router';
+import Header from './header/header.vue';
+const route = useRoute();
 </script>
-
 <template>
-  <Header v-if="!['/editor', '/home'].includes($route.path)" />
+  <Header v-if="!['/editor', '/home'].includes(route.path)" />
   <div id="main">
     <el-tooltip placement="bottom" content="返回顶部">
       <el-backtop :bottom="100" />
@@ -15,7 +15,6 @@ import Footer from "./footer.vue"
       </keep-alive>
     </router-view>
   </div>
-  <Footer v-if="!['/home', '/editor'].includes($route.path)" />
 </template>
 
 <style lang="scss" scoped>

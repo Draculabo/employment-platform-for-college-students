@@ -1,7 +1,7 @@
-<script setup lang='ts'>
-import { importCSS } from "@/common/utils";
-import { onMounted, onUnmounted } from "vue";
-import { useRoute, useRouter } from "vue-router";
+<script setup lang="ts">
+import { importCSS } from '@/common/utils';
+import { onMounted, onUnmounted } from 'vue';
+import { useRoute, useRouter } from 'vue-router';
 
 const route = useRoute();
 const router = useRouter();
@@ -9,20 +9,20 @@ const router = useRouter();
 onMounted(() => {
   importCSS(String(route.query.type));
   const content = JSON.parse(localStorage.getItem('download') || '');
-  (document.querySelector(".markdown-transform-html") as HTMLElement).innerHTML = content;
+  (document.querySelector('.markdown-transform-html') as HTMLElement).innerHTML = content;
   setTimeout(() => {
     window.print();
     router.back();
   }, 100);
-})
+});
 
 onUnmounted(() => {
-  localStorage.removeItem('download')
-})
+  localStorage.removeItem('download');
+});
 </script>
 
 <template>
-  <div class="markdown-transform-html jufe"></div>
+  <div class="markdown-transform-html jufe" />
 </template>
 
 <style lang="scss" scoped>
@@ -30,7 +30,7 @@ onUnmounted(() => {
   width: 210mm;
   min-height: 295mm;
   &::before {
-    content: "";
+    content: '';
     background: #fff;
     z-index: -1;
     position: fixed;

@@ -1,39 +1,19 @@
 const homeNav = [
   {
-    name: '简历制作',
+    name: '简历编写',
     path: '/theme',
-    tooltip: false
+    tooltip: false,
   },
   {
-    name: '求职社区',
+    name: '交流社区',
     path: '/community',
-    tooltip: false
+    tooltip: false,
   },
   {
-    name: '语法助手',
+    name: '帮助手册',
     path: '/syntax/helper',
-    tooltip: false
+    tooltip: false,
   },
-  {
-    name: '更新内容',
-    path: '/update/line',
-    tooltip: false
-  }
-]
-
-const homeOutNav = [
-  {
-    name: 'GitHub',
-    path: 'https://github.com/acmenlei/markdown-resume-to-pdf',
-    icon: 'iconfont icon-github'
-  },
-  {
-    name: 'Gitee',
-    path: 'https://gitee.com/codeleilei/markdown2pdf',
-    icon: 'iconfont icon-gitee'
-  }
 ];
-export {
-  homeNav,
-  homeOutNav
-};
+
+export { homeNav };

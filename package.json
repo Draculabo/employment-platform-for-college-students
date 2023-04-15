@@ -32,7 +32,10 @@
   },
   "scripts": {
     "prepare": "husky install",
-    "cz": "cz"
+    "cz": "cz",
+    "front": "pnpm --filter frontend dev",
+    "back": "pnpm --filter backend start",
+    "back:node": "pnpm --filter backend start:node"
   },
   "config": {
     "commitizen": {

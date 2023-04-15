@@ -8,6 +8,8 @@ import UserModel from '../user/user';
 })
 export default class RoleModel extends Content {
   @Column()
+  role_id: string;
+  @Column()
   name: string;
   @Column({
     type: 'enum',

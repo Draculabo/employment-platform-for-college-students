@@ -1,6 +1,6 @@
+import { config } from '@/utils/ParseConfig';
 import packages from '../../package.json';
 // eslint-disable-next-line import/default
-import { config } from '../utils/ParseConfig';
 
 export const isDev = process.env.MODE === 'development';
 export const isTest = process.env.IS_TEST || false;
@@ -50,23 +50,6 @@ export const Github = {
   clientSecret: config.login.github.client_secret,
 };
 
-export const Apple = {
-  enable: config.login.apple.enable,
-};
-
-export const AgoraLogin = {
-  enable: config.login.agora.enable,
-  clientId: config.login.agora.client_id,
-  clientSecret: config.login.agora.client_secret,
-};
-
-export const Google = {
-  enable: config.login.google.enable,
-  clientId: config.login.google.client_id,
-  clientSecret: config.login.google.client_secret,
-  redirectURI: config.login.google.redirect_uri,
-};
-
 export const PhoneSMS = {
   enable: config.login.sms.enable,
   force: config.login.sms.force,
@@ -82,47 +65,11 @@ export const PhoneSMS = {
     templateCode: config.login.sms.chinese_mainland.template_code,
     signName: config.login.sms.chinese_mainland.sign_name,
   },
-  hmt: {
-    accessId: config.login.sms.hmt.access_id,
-    accessSecret: config.login.sms.hmt.access_secret,
-    templateCode: config.login.sms.hmt.template_code,
-    signName: config.login.sms.hmt.sign_name,
-  },
   global: {
     accessId: config.login.sms.global.access_id,
     accessSecret: config.login.sms.global.access_secret,
     templateCode: config.login.sms.global.template_code,
     signName: config.login.sms.global.sign_name,
-  },
-};
-
-export const Agora = {
-  appId: config.agora.app.id,
-  appCertificate: config.agora.app.certificate,
-  restfulId: config.agora.restful.id,
-  restfulSecret: config.agora.restful.secret,
-  ossVendor: config.agora.oss.vendor,
-  ossAccessKeyId: config.agora.oss.access_id,
-  ossAccessKeySecret: config.agora.oss.access_secret,
-  ossRegion: config.agora.oss.region,
-  ossBucket: config.agora.oss.bucket,
-  ossFolder: config.agora.oss.folder,
-  ossPrefix: config.agora.oss.prefix,
-  screenshot: {
-    enable: config.agora.screenshot.enable,
-    oss: {
-      vendor: config.agora.screenshot.oss.vendor,
-      accessKeyId: config.agora.screenshot.oss.access_id,
-      accessKeySecret: config.agora.screenshot.oss.access_secret,
-      region: config.agora.screenshot.oss.region,
-      bucket: config.agora.screenshot.oss.bucket,
-      folder: config.agora.screenshot.oss.folder,
-      prefix: config.agora.screenshot.oss.prefix,
-    },
-  },
-  messageNotification: {
-    enable: config.agora.messageNotification.enable,
-    events: config.agora.messageNotification.events,
   },
 };
 
@@ -132,9 +79,9 @@ export const JWT = {
 };
 
 export const Whiteboard = {
-  accessKey: config.whiteboard.access_key,
-  secretAccessKey: config.whiteboard.secret_access_key,
-  convertRegion: config.whiteboard.convert_region,
+  accessKey: config.whiteboard?.access_key,
+  secretAccessKey: config.whiteboard?.secret_access_key,
+  convertRegion: config.whiteboard?.convert_region,
 };
 
 export const CloudStorage = {
@@ -176,39 +123,13 @@ export const LogConfig = {
   filename: config.log.filename,
 };
 
-export const Censorship = {
-  video: {
-    enable: config.censorship.video.enable,
-    type: config.censorship.video.type,
-    aliCloud: {
-      accessID: config.censorship.video.aliCloud.access_id,
-      accessSecret: config.censorship.video.aliCloud.access_secret,
-      endpoint: config.censorship.video.aliCloud.endpoint,
-    },
-  },
-  voice: {
-    enable: config.censorship.voice.enable,
-    type: config.censorship.voice.type,
-    aliCloud: {
-      uid: config.censorship.voice.aliCloud.uid,
-      accessID: config.censorship.voice.aliCloud.access_id,
-      accessSecret: config.censorship.voice.aliCloud.access_secret,
-      callbackAddress: config.censorship.voice.aliCloud.callback_address,
-    },
-  },
-  text: {
-    enable: config.censorship.text.enable,
-    type: config.censorship.text.type,
-    aliCloud: {
-      accessID: config.censorship.text.aliCloud.access_id,
-      accessSecret: config.censorship.text.aliCloud.access_secret,
-      endpoint: config.censorship.text.aliCloud.endpoint,
-    },
-  },
-};
-
 export const MetricsConfig = {
   enabled: process.env.Emp_METRICS_ENABLED || config.metrics.enable,
   endpoint: process.env.Emp_METRICS_ENDPOINT || config.metrics.endpoint,
   port: Number(process.env.Emp_METRICS_PORT || config.metrics.port),
+};
+
+export const ChatGPTConfig = {
+  secret: process.env.Chat_Secret || config.chatgpt.secret,
+  proxy: process.env.CHAT_Proxy || config.chatgpt.proxy,
 };

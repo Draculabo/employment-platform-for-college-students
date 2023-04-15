@@ -1,21 +1,19 @@
-@import url("@/assets/icon/iconfont.css");
-
+@import '@/assets/icon/iconfont.css';
+@import './variables.scss';
 @font-face {
-  font-family: "Menlo-Regular";
-  src: url("../assets/font/Menlo-Regular.ttf") format("ttf"),
-    url("../assets/font/monaco.ttf") format("ttf");
+  font-family: 'Menlo-Regular';
+  src: url('../assets/font/Menlo-Regular.ttf') format('ttf'), url('../assets/font/monaco.ttf') format('ttf');
   font-display: swap;
 }
 
 @font-face {
-  font-family: "方正GDC体";
-  src: url("../assets/font/方正GDC体.ttf") format("ttf");
+  font-family: '方正GDC体';
+  src: url('../assets/font/方正GDC体.ttf') format('ttf');
 }
 
 @font-face {
-  font-family: "仓耳渔阳体 W02";
-  src: url("../assets/font/仓耳渔阳体W02.woff2") format("woff2"),
-    url("../assets/font/仓耳渔阳体W02.woff") format("woff");
+  font-family: '仓耳渔阳体 W02';
+  src: url('../assets/font/仓耳渔阳体W02.woff2') format('woff2'), url('../assets/font/仓耳渔阳体W02.woff') format('woff');
   font-display: swap;
 }
 
@@ -36,7 +34,7 @@
   display: flex;
   margin-left: 50px;
 
-  &>li {
+  & > li {
     list-style: none;
     margin: 0 20px;
     height: 60px;
@@ -83,11 +81,11 @@
   font-weight: bold;
 
   &::after {
-    content: "";
+    content: '';
     position: absolute;
     bottom: 0;
     height: 4px;
-    width: 60%;
+    width: 100%;
     left: 0;
     background-color: var(--theme);
     border-radius: 3px;
@@ -117,7 +115,7 @@
 
 .logo {
   cursor: pointer;
-  transition: transform .5s;
+  transition: transform 0.5s;
 
   &:hover {
     will-change: transform;
@@ -127,7 +125,7 @@
 
 .hover {
   &:hover {
-    opacity: .5;
+    opacity: 0.5;
   }
 }
 
@@ -182,7 +180,7 @@
   cursor: pointer;
 
   &:hover {
-    opacity: .8;
+    opacity: 0.8;
   }
 }
 
@@ -203,7 +201,7 @@
     cursor: pointer;
     margin-top: 10px;
     &:hover {
-      opacity: .7;
+      opacity: 0.7;
     }
   }
 }
@@ -287,16 +285,16 @@
   margin-right: 5px;
   border-radius: 5px;
   /* background: var(--theme); */
-  background-color: #4158D0;
-  background-image: linear-gradient(43deg, #4158D0 0%, #C850C0 46%, #8170ff 100%);
+  background-color: #4158d0;
+  background-image: linear-gradient(43deg, #4158d0 0%, #c850c0 46%, #8170ff 100%);
   background-size: 400%;
   color: white;
   cursor: pointer;
   animation: move 6s linear infinite;
-  transition: transform .5s;
+  transition: transform 0.5s;
 
   &:hover {
-    opacity: .8;
+    opacity: 0.8;
     transform: scale(0.9);
   }
 }

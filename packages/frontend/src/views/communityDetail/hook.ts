@@ -2,49 +2,62 @@ import { useThrottleFn } from '@vueuse/core';
 import { warningMessage } from '@/common/message';
 import useUserStore from '@/store/modules/user';
 import { initialInfo } from './../../store/modules/user';
-import { onActivated, onDeactivated, reactive, Ref, ref, watch, watchEffect } from "vue";
-import { queryCommunityArticleById, likeArticle } from '@/services/modules/community';
-import { queryCommentPosition, queryCommunityArticleCommentsById } from "@/services/modules/comments";
+import { onActivated, onDeactivated, reactive, Ref, ref, watch, watchEffect } from 'vue';
+import { queryCommunityArticleById, likeArticle } from '@/services/modules/community/community';
+import { queryCommentPosition, queryCommunityArticleCommentsById } from '@/services/modules/comment/comment';
 import { errorMessage } from '@/common/message';
 import { isLogin } from '@/common/hooks/global';
 import { calcOffsetTop, scrollTo } from '@/common/utils';
+import { IArticle } from '@/services/modules/community/type';
+import { ArticleType } from '@/types/enums';
+import { isNil } from 'lodash';
 
-export function useArticleDetail(articleId: Ref<number>, posterCommentId: Ref<number>) {
-  const article = reactive({
+export function useArticleDetail(articleId: Ref<string>, posterCommentId: Ref<number>) {
+  const article = ref<IArticle>({
     title: '',
     content: '',
-    professional: '',
-    authorId: 0,
-    likes: [] as number[],
-    commentTotal: 0,
-    hot: 0,
-    createTime: '',
-    updateTime: '',
-    articleId: articleId.value,
-    introduce: '',
-    authorInfo: initialInfo,
-    comments: [] as IComment[],
+    // professional: '',
+    user_id: '',
+    // commentTotal: 0,
+    // hot: 0,
+    created_at: '',
+    updated_at: '',
+    article_id: articleId.value,
+    // introduce: '',
+    userInfo: {} as IArticle['userInfo'],
+    share_number: 0,
+    article_type: ArticleType.Chat,
+    comments: [],
   });
-  const total = ref(0), commentsTotal = ref(0), commentsConditions = reactive({ pageNum: 1, pageSize: 10, articleId: articleId.value });
-  const position = ref();
+  const total = ref(0),
+    commentsTotal = ref(0),
+    commentsConditions = reactive({
+      config: {
+        pageNo: 1,
+        pageSize: 10,
+      },
+      article_id: articleId.value,
+    });
+  const position = ref<number>(0);
   async function queryArticle() {
     if (!articleId.value) {
       errorMessage('出错了');
       return;
     }
-    const articleData: IResponse<IArticle> = await queryCommunityArticleById({ articleId: articleId.value }) as IResponse<IArticle>;
-    if (articleData.code == 200) {
-      initArticleInfo(article, articleData.data as IArticle);
+    const articleData = await queryCommunityArticleById({ article_id: articleId.value });
+    if (articleData.status === 0) {
+      article.value = articleData.data;
+      // initArticleInfo(article, articleData.data);
     }
   }
 
   async function queryComments() {
-    commentsConditions.articleId = articleId.value;
-    const commentsData: IResponse<IComment[]> = await queryCommunityArticleCommentsById(commentsConditions) as IResponse<IComment[]>;
-    if (commentsData.code == 200) {
-      article.comments = commentsData.data as IComment[];
-      total.value = commentsData.total as number;
-      commentsTotal.value = commentsData.commentsTotal as number;
+    commentsConditions.article_id = articleId.value;
+    const commentsData = await queryCommunityArticleCommentsById(commentsConditions);
+    if (commentsData.status === 0) {
+      article.value.comments = commentsData.data.list;
+      total.value = commentsData.data.list.length;
+      commentsTotal.value = commentsData.data.list.length;
     }
   }
 
@@ -54,7 +67,7 @@ export function useArticleDetail(articleId: Ref<number>, posterCommentId: Ref<nu
   }
 
   function pageNumChange(pageNum: number) {
-    commentsConditions.pageNum = pageNum;
+    commentsConditions.config.pageNo = pageNum;
     queryComments();
     toCommentFieldTop();
   }
@@ -66,42 +79,45 @@ export function useArticleDetail(articleId: Ref<number>, posterCommentId: Ref<nu
       return;
     }
     const { userInfo } = useUserStore();
-    const { code } = await likeArticle({ articleId: articleId.value, userId: userInfo.uid }) as IResponse<unknown>
-    if (code == 200) {
-      article.likes.push(userInfo.uid);
-    }
+    // const { status } = await likeArticle({ articleId: articleId.value, userId: userInfo.uid });
+    // if (status === 200) {
+    //   article.likes.push(userInfo.uid);
+    // }
   }
 
   const init = useThrottleFn(function () {
-    if (!isNaN(articleId.value)) {
+    if (!isNil(articleId.value)) {
       queryComments();
       queryArticle();
     }
-  })
+  });
 
-  watch(() => articleId.value, () => {
-    init();
-  })
+  watch(
+    () => articleId.value,
+    () => {
+      init();
+    }
+  );
 
   watchEffect(async () => {
-    if (isNaN(posterCommentId.value)) return;
-    // 查询数据 返回具体的comment位置
-    const { data, code, msg } = await queryCommentPosition({
-      commentId: posterCommentId.value,
-      pageSize: commentsConditions.pageSize,
-      articleId: articleId.value
-    }) as IResponse<ICommentPosition>;
-    if (code === 200) {
-      commentsConditions.pageNum = (data as ICommentPosition).pageNum;
-      article.comments = (data as ICommentPosition).data;
-      position.value = (data as ICommentPosition).position;
-    } else {
-      errorMessage(msg);
-    }
-  })
+    // if (isNaN(posterCommentId.value)) return;
+    // // 查询数据 返回具体的comment位置
+    // const { data, code, msg } = (await queryCommentPosition({
+    //   commentId: posterCommentId.value,
+    //   pageSize: commentsConditions.config.pageSize,
+    //   articleId: articleId.value,
+    // })) as IResponse<ICommentPosition>;
+    // if (code === 200) {
+    //   commentsConditions.pageNum = (data as ICommentPosition).pageNum;
+    //   article.comments = (data as ICommentPosition).data;
+    //   position.value = (data as ICommentPosition).position;
+    // } else {
+    //   errorMessage(msg);
+    // }
+  });
 
   onActivated(init);
-  onDeactivated(() => article.content = '');
+  onDeactivated(() => (article.value.content = ''));
 
   return {
     commentsConditions,
@@ -113,22 +129,8 @@ export function useArticleDetail(articleId: Ref<number>, posterCommentId: Ref<nu
     queryArticle,
     pageNumChange,
     queryComments,
-    toCommentFieldTop
-  }
-}
-
-function initArticleInfo(article: IArticle, info: IArticle) {
-  article.articleId = info.articleId;
-  article.title = info.title;
-  article.content = info.content;
-  article.commentTotal = info.commentTotal;
-  article.professional = info.professional;
-  article.authorId = info.authorId;
-  article.likes = info.likes;
-  article.createTime = info.createTime;
-  article.updateTime = info.updateTime;
-  article.introduce = info.introduce;
-  article.authorInfo = info.authorInfo;
+    toCommentFieldTop,
+  };
 }
 
 export function useDelayMenuBar(articleId: Ref) {
@@ -137,17 +139,20 @@ export function useDelayMenuBar(articleId: Ref) {
 
   function controlMenuBar() {
     delay.value = false;
-    setTimeout(() => delay.value = true, 200)
+    setTimeout(() => (delay.value = true), 200);
   }
 
   onActivated(() => {
     controlMenuBar();
-  })
-  watch(() => articleId.value, () => {
-    controlMenuBar();
-  })
+  });
+  watch(
+    () => articleId.value,
+    () => {
+      controlMenuBar();
+    }
+  );
 
   return {
-    delay
-  }
+    delay,
+  };
 }

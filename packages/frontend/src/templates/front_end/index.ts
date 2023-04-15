@@ -2,14 +2,14 @@ export default `## 张三-Web前端开发工程师
 ::: start
 icon:user 男 / 2000.01.01 / 江西南昌
 icon:phone 155xxxxxx06
-::: 
+:::
 [icon:email xxxxxxxx@163.com](xxxxxxxx@163.com)
-[icon:github https://github.com/acmenlei](https://github.com/acmenlei)
+[icon:github https://github.com/zhangsan](https://github.com/zhangsan)
 ::: end
 
 ## 教育背景
 ::: start
-- **江西xxxx大学**
+- **武汉大学**
 - 软件与物联网工程学院 - 软件工程（本科） GPA 3.6 / 4.0
 :::
 
@@ -25,16 +25,6 @@ icon:phone 155xxxxxx06
 - 了解前端工程化，能使用 Vite、Webpack 对项目进行基本的配置
 - 了解计算机网络相关知识，如 TCP/IP、UDP、HTTP、HTTPS、DNS 协议等
 - 了解 Nodejs 及其生态，如 Express、Sequelize，并能使用 Nodejs 搭建基本的后台服务
-
-## 开源作品
-**[icon:github markdown-transform-html](https://github.com/acmenlei/markdown-transform-html)**
-- **工具介绍**：基于 TypeScript 开发的 MD 词法分析器，一站式解析 Markdown 语法为 HTML 结构的工具，且可提供代码高亮功能
-- **线上演示**：[https://acmenlei.github.io/markdown-transform-html-demo/dist/](https://acmenlei.github.io/markdown-transform-html-demo/dist/)
-
-**[icon:github v3-carousel](https://github.com/acmenlei/v3-carousel)**
-- **工具介绍**：基于 Vue3 Composition Api 开发的轮播图组件，轮播内容可完全自定义
-- **线上演示**：[https://acmenlei.github.io/v3-carousel/dist/](https://acmenlei.github.io/v3-carousel/dist/)
-
 ## 实习经历
 ::: start
 **xxxxxx - xxxxxx - web前端开发实习生 - 杭州(xxxx人以上)**
@@ -71,4 +61,4 @@ icon:phone 155xxxxxx06
 3. 头像上传基于用户所选图片大小来确定是否使用切片上传, 解决了大图片上传后响应慢的问题
 4. 自定义键盘 Hook，解决多个页面的键盘事件监听造成的代码冗余问题，极大提升了代码可读性
 5. 换肤采用 CSS3 动画属性以及基于主题色 Dark 以及 Light 进行切换，优化页面性能表现
-6. 项目中采用节流对交互按钮进行优化，减轻服务端压力，动画也尽量使用 CSS3 的方式实现，提升用户体验`
+6. 项目中采用节流对交互按钮进行优化，减轻服务端压力，动画也尽量使用 CSS3 的方式实现，提升用户体验`;

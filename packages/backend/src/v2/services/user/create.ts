@@ -15,10 +15,7 @@ export class UserCreateService {
   constructor(private readonly ids: IDS, private readonly DBTransaction: EntityManager, private readonly userUUID: string) {}
 
   public async create(
-    params: {} & Pick<
-      UserModel,
-      'user_name' | 'user_password' | 'avatar_url' | 'gender' | 'age' | 'universities' | 'job' | 'phone' | 'work_city'
-    >
+    params: {} & Pick<UserModel, 'user_name' | 'user_password' | 'avatar_url' | 'gender' | 'age' | 'job' | 'phone' | 'work_city'>
   ) {
     await userDAO.insert(this.DBTransaction, params, {});
     successJSON({});

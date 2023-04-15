@@ -11,5 +11,9 @@ export default class CommentModel extends Content {
   @Column()
   user_id: string;
   @Column()
+  article_id: string;
+  @Column()
   content: string;
+  @Column()
+  comment_by: string;
 }

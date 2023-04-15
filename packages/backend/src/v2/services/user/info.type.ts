@@ -1,5 +1,13 @@
 import { Type } from '@sinclair/typebox';
 
 export const userInfoSchema = {
-  user_id: Type.String(),
+  querystring: Type.Object({
+    user_id: Type.Optional(Type.String()),
+  }),
+};
+
+export const existInfoSchema = {
+  body: Type.Object({
+    account: Type.String(),
+  }),
 };

@@ -1,9 +1,11 @@
-import { getLocalStorage, setLocalStorage } from "@/common/hooks/useLcoaStoage";
-import { onActivated, ref } from "vue";
-import { useRouter } from "vue-router";
+import { getLocalStorage, setLocalStorage } from '@/common/hooks/useLcoalStorage';
+import { onActivated, ref } from 'vue';
+import { useRouter } from 'vue-router';
 
 export function useBrowseHistory() {
-  const BROWSE_HISTORY = '__BROWSE_HISTORY__', max = 10, data = ref<IArticle[]>([]);
+  const BROWSE_HISTORY = '__BROWSE_HISTORY__',
+    max = 10,
+    data = ref<IArticle[]>([]);
   const router = useRouter();
 
   function setBrowseHistory(article: IArticle) {
@@ -24,16 +26,16 @@ export function useBrowseHistory() {
   }
 
   function useDetail(articleId: number) {
-    router.push(`/community/detail?articleId=${articleId}`)
+    router.push(`/community/detail?articleId=${articleId}`);
   }
 
   onActivated(() => {
     setData(getBrowseHistory() || []);
-  })
+  });
   return {
     data,
     useDetail,
     setBrowseHistory,
-    getBrowseHistory
-  }
+    getBrowseHistory,
+  };
 }

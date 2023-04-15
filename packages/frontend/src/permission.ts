@@ -1,13 +1,13 @@
-import router from "./router";
-import { getLocalStorage } from "@/common/hooks/useLcoaStoage";
-import { TOKEN } from "@/store/modules/user";
-import useUserStore from "@/store/modules/user"
-import nprogress from "nprogress";
-import "nprogress/nprogress.css"
+import router from './router';
+import { getLocalStorage } from '@/common/hooks/useLcoalStorage';
+import { TOKEN } from '@/store/modules/user';
+import useUserStore from '@/store/modules/user';
+import nprogress from 'nprogress';
+import 'nprogress/nprogress.css';
 
 nprogress.configure({ easing: 'ease', speed: 300 });
 
-const whiteList = ['/download']
+const whiteList = ['/download'];
 
 router.beforeEach((to, from, next) => {
   if (!whiteList.includes(to.path)) {
@@ -23,11 +23,10 @@ router.beforeEach((to, from, next) => {
     }
   }
   next();
-})
+});
 
 router.afterEach(() => {
-  nprogress.done()
-})
-
+  nprogress.done();
+});
 
 export default router;

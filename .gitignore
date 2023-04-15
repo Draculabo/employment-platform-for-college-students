@@ -26,3 +26,12 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+# build
+build/*
+packages/frontend/src/assets/*
+packages/backend/dist/*
+# config
+
+packages/backend/**/config/*
+
+# packages/backend/src/config/development.local.yaml

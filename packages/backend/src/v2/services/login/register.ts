@@ -1,4 +1,5 @@
 import { createLoggerService } from '@/logger';
+import { createHash } from 'crypto';
 import { EntityManager } from 'typeorm';
 import { LoginRequestType } from './login.schema';
 import { userDAO } from '@/v2/dao';
@@ -9,6 +10,8 @@ import { successJSON } from '@/v2/controllers/internal/utils/response-json';
 import { pick } from 'lodash';
 import { RegisterSchemaType } from './register.schema';
 import { v4 } from 'uuid';
+import { cryptoMD5 } from '@/v2/dao/assistant';
+import { UserInfoService } from '../user/info';
 
 export default class RegisterService {
   private readonly logger = createLoggerService<'register'>({
@@ -17,15 +20,20 @@ export default class RegisterService {
   });
   constructor(private readonly ids: IDS, private readonly DBTransaction: EntityManager, private readonly userUUID: string) {}
   public async register(body: RegisterSchemaType) {
-    const result = userDAO.insert(this.DBTransaction, {
+    debugger;
+    const user_uuid = v4();
+    await userDAO.insert(this.DBTransaction, {
       account: body.account,
-      user_password: body.password,
-      user_uuid: v4(),
+      user_password: cryptoMD5(body.password),
+      user_uuid: user_uuid,
+      user_name: body.account,
+      phone: body.phone,
     });
-    if (isNil(result)) {
-      this.logger.info('create account failed');
-      throw new FError(ErrorCode.CustomNotFound);
-    }
-    return {};
+    return {
+      username: body.account,
+      account: body.account,
+      avatar_url: '',
+      user_uuid,
+    };
   }
 }

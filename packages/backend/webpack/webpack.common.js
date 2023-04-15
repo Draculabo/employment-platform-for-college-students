@@ -1,4 +1,4 @@
-const paths = require('./paths');
+const paths = require('./paths.js');
 const ESLintPlugin = require('eslint-webpack-plugin');
 const nodeExternals = require('webpack-node-externals');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
@@ -74,5 +74,8 @@ module.exports = {
   output: {
     filename: 'index.js',
     path: paths.dist,
+  },
+  experiments: {
+    topLevelAwait: true,
   },
 };

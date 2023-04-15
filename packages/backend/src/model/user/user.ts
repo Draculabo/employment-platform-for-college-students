@@ -57,13 +57,10 @@ export default class UserModel extends Content {
   phone: string;
   @Column()
   work_city: string;
+  @Column()
+  introduction: string;
   @OneToMany(() => UserModel, (user) => user.user_uuid)
   followings: UserModel[];
   @OneToMany(() => UserModel, (user) => user.user_uuid)
   followers: UserModel[];
-  @Index('users_is_delete_index')
-  @Column({
-    default: false,
-  })
-  is_delete: boolean;
 }

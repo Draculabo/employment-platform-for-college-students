@@ -18,6 +18,16 @@ import { OAuthUsersModel } from '../../model/oauth/oauth-users';
 import { CloudStorageUserFilesModel } from '@/model/cloudStorage/CloudStorageUserFiles';
 import { CloudStorageFilesModel } from '@/model/cloudStorage/CloudStorageFiles';
 import { CloudStorageConfigsModel } from '@/model/cloudStorage/CloudStorageConfigs';
+import GroupModel from '@/model/group/group';
+import RoleModel from '@/model/group/role';
+import MessageModel from '@/model/message/message';
+import GroupUserModel from '@/model/group/groupUser';
+import RoleUserModel from '@/model/group/roleUser';
+import SubjectStudentModel from '@/model/user/SubjectStudent';
+import UniversityStudentModel from '@/model/user/universityStudent';
+import UserUniversityModel from '@/model/user/userUniversity';
+import { ConfigType } from './type';
+import UserPhoneModel from "@/model/user/phone";
 
 class DAO<M extends Model> {
   public constructor(private readonly model: EntityTarget<M>) {}
@@ -40,7 +50,13 @@ class DAO<M extends Model> {
     where: FindOptionsWhere<M>,
     order?: [keyof M & string, 'ASC' | 'DESC']
   ): Promise<Pick<M, T>> {
-    let sql = t.getRepository(this.model).createQueryBuilder().select(DAOUtils.select(select)).where(DAOUtils.softDelete(where));
+    let sql;
+    try {
+      sql = t.getRepository(this.model).createQueryBuilder().select(DAOUtils.select(select)).where(DAOUtils.softDelete(where));
+    } catch (error) {
+      console.log(error);
+      throw error;
+    }
 
     if (order) {
       sql = sql.orderBy(...order);
@@ -60,12 +76,7 @@ class DAO<M extends Model> {
     t: EntityManager,
     select: T | T[],
     where: FindOptionsWhere<M>,
-    config?: {
-      order?: [keyof M & string, 'ASC' | 'DESC'];
-      distinct?: boolean;
-      limit?: number;
-      offset?: number;
-    }
+    config?: ConfigType<M>
   ): Promise<Pick<M, T>[]> {
     let sql = t
       .getRepository(this.model)
@@ -74,7 +85,6 @@ class DAO<M extends Model> {
       .where(DAOUtils.softDelete(where))
       .limit(config?.limit)
       .offset(config?.offset);
-
     if (config?.distinct) {
       sql = sql.distinct(config.distinct);
     }
@@ -159,17 +169,15 @@ class DAOUtils {
     return (Array.isArray(s) ? s : [s]) as (T & string)[];
   }
 }
-export type ConfigType<M> = {
-  order?: [keyof M & string, 'ASC' | 'DESC'];
-  distinct?: boolean;
-  limit?: number;
-  offset?: number;
-};
 
 export const userDAO = new DAO(UserModel);
+export const userPhoneDAO = new DAO(UserPhoneModel)
+export const userUniversityDAO = new DAO(UserUniversityModel);
 export const StudentDAO = new DAO(StudentModel);
 export const SubjectDAO = new DAO(SubjectModel);
+export const subjectStudentDAO = new DAO(SubjectStudentModel);
 export const UniversityDAO = new DAO(UniversityModel);
+export const universityStudentDAO = new DAO(UniversityStudentModel);
 export const WechatUserDAO = new DAO(WechatUserModel);
 export const ArticleDAO = new DAO(ArticleModel);
 export const CommentDAO = new DAO(CommentModel);
@@ -180,3 +188,8 @@ export const oauthUsersDAO = new DAO(OAuthUsersModel);
 export const cloudStorageUserFilesDAO = new DAO(CloudStorageUserFilesModel);
 export const cloudStorageFilesDAO = new DAO(CloudStorageFilesModel);
 export const cloudStorageConfigsDAO = new DAO(CloudStorageConfigsModel);
+export const groupDAO = new DAO(GroupModel);
+export const groupUserDAO = new DAO(GroupUserModel);
+export const roleDAO = new DAO(RoleModel);
+export const roleUserDAO = new DAO(RoleUserModel);
+export const messageDAO = new DAO(MessageModel);

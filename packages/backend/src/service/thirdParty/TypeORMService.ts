@@ -50,9 +50,9 @@ export const dataSource = new DataSource({
     ArticleCommentOperatorModel,
     ArticleModel,
     CommentModel,
-    CloudStorageConfigsModel,
-    CloudStorageFilesModel,
-    CloudStorageUserFilesModel,
+    // CloudStorageConfigsModel,
+    // CloudStorageFilesModel,
+    // CloudStorageUserFilesModel,
     // group
     GroupModel,
     GroupUserModel,

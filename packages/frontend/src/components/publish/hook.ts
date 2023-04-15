@@ -1,9 +1,9 @@
-import { onDeactivated } from 'vue';
+import { onDeactivated, Ref, ref } from 'vue';
 import { useThrottleFn } from '@vueuse/core';
 import { errorMessage, successMessage, warningMessage } from '@/common/message';
-import { publishComment, publishCommentReply } from '@/services/modules/comments';
+import { publishComment } from '@/services/modules/comment/comment';
 import useUserStore from '@/store/modules/user';
-import { Ref, ref } from 'vue';
+
 import { ImageUpload } from '@/common/utils/uploader';
 export function useEmoji(mainContent: Ref<string>) {
   const picker = ref(false);
@@ -18,68 +18,72 @@ export function useEmoji(mainContent: Ref<string>) {
   }
 
   return {
-    picker, togglePicker, setEmoji
-  }
+    picker,
+    togglePicker,
+    setEmoji,
+  };
 }
 // 评论和回复的逻辑都在这。
 export function usePublishShare(
-  articleId: Ref<number>,
+  articleId: Ref<string>,
   level: Ref<number>,
-  posterCommentId: Ref<number>,
-  replyAuthorId: Ref<number>,
-  replyArticleAuthorId: Ref<number>,
-  replyCommentId: Ref<number>,
+  posterCommentId: Ref<string>,
+  replyAuthorId: Ref<string>,
+  replyArticleAuthorId: Ref<string>,
+  replyCommentId: Ref<string>,
   replyCommentLevel: Ref<number>,
   emits: Function,
-  images: Ref<string[]>) 
-  {
+  images: Ref<string[]>
+) {
   const shareMainContent = ref('');
   const { loginState, loginModelToggle, userInfo } = useUserStore();
 
   async function publish() {
-    if (!loginState.logined) {
+    if (!loginState.loginStatus) {
       loginModelToggle();
       return;
     }
     if (!shareMainContent.value.trim()) {
-      warningMessage('你发个空内容是想干嘛呢？？？');
+      warningMessage('请输入有意义的内容');
       return;
     }
     if (shareMainContent.value.length > 200) {
-      warningMessage('太多了存不下, 删到200字以内吧');
+      warningMessage('内容长度请限制在200字以内');
       return;
     }
-    const cb = level.value == 1 ? publishComment : publishCommentReply;
+    const cb = publishComment;
     const params = {
       content: shareMainContent.value.replace(/</g, '&lt;').replace(/>/g, '&gt;'),
-      authorId: userInfo.uid, // 发表这条评论的作者是谁
-      images: images.value.join('~$^$~'),
-      level: level.value, // 几级评论
-      articleId: articleId.value, // 文章ID
-      posterCommentId: posterCommentId.value, // 楼主是谁
-      replyAuthorId: replyAuthorId.value, // 回复的那条评论是谁发表的
-      replyArticleAuthorId: replyArticleAuthorId.value, // 回复的文章是谁发表的
-      replyCommentId: replyCommentId.value, // 回复谁
-      replyCommentLevel: replyCommentLevel.value, // 回复的评论是几级评论
+      user_id: userInfo.user_uuid, // 发表这条评论的作者是谁
+      // images: images.value.join('~$^$~'),
+      // level: level.value, // 几级评论
+      article_id: articleId.value, // 文章ID
+      // posterCommentId: posterCommentId.value, // 楼主是谁
+      comment_by: replyCommentId.value, // 回复的那条评论是谁发表的
+      // replyArticleAuthorId: replyArticleAuthorId.value, // 回复的文章是谁发表的
+      // replyCommentId: replyCommentId.value, // 回复谁
+      // replyCommentLevel: replyCommentLevel.value, // 回复的评论是几级评论
     };
     // console.log(params)
-    const rest = await cb(params) as IResponse<unknown>;
-    if (rest.code == 200) {
+    const rest = await cb(params);
+    if (rest.status === 0) {
       shareMainContent.value = '';
       images.value.length = 0; // 清空图片内容
       emits('reQueryComments');
     }
-    rest.code == 200 ? successMessage(rest.msg) : errorMessage(rest.msg);
+    if (rest.msg) {
+      rest.status === 0 ? successMessage(rest.msg) : errorMessage(rest.msg);
+    }
   }
 
   onDeactivated(() => {
     shareMainContent.value = '';
     images.value.length = 0;
-  })
+  });
   return {
     shareMainContent,
-    publish: useThrottleFn(publish, 1000)
-  }
+    publish: useThrottleFn(publish, 1000),
+  };
 }
 
 export function usePickerImage() {
@@ -96,12 +100,12 @@ export function usePickerImage() {
 
     input.onchange = async function () {
       const files = Array.from(input.files as FileList);
-      for (let file of files) {
+      for (const file of files) {
         const path = await ImageUpload(file);
         images.value.push(path);
       }
       input.remove();
-    }
+    };
   }
 
   function deleteImage(idx: number) {
@@ -110,6 +114,6 @@ export function usePickerImage() {
   return {
     images,
     pickerImage,
-    deleteImage
-  }
+    deleteImage,
+  };
 }

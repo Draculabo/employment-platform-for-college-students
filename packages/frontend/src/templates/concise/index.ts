@@ -6,10 +6,10 @@ icon:phone 1387848538
 :::
 icon:email examples.@163.com
 :::
-icon:github https://github.com/acmenlei
+icon:github https://github.com/madongmei
 ::: end
 ## 教育经历
-江西财经大学 信电学院-计算机 2019-2023 本科
+惠州学院 人工智能-计算机学院 2019-2023 本科
 
 ## 专业技能
 熟知Javascript 基本语法与知识，熟练掌握模块化，面向对象，MVC 等编程思想，具备各种框架等学习能力

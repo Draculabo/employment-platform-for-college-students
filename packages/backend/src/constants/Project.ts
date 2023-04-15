@@ -1,4 +1,4 @@
-import { Type } from "@sinclair/typebox";
+import { Type } from '@sinclair/typebox';
 
 export enum Status {
   NoLogin = -1,
@@ -32,5 +32,5 @@ export enum Region {
 }
 
 export const RegionSchema = Type.String({
-    enum: [Region.CN_HZ, Region.SG, Region.GB_LON, Region.IN_MUM, Region.US_SV],
+  enum: [Region.CN_HZ, Region.SG, Region.GB_LON, Region.IN_MUM, Region.US_SV],
 });

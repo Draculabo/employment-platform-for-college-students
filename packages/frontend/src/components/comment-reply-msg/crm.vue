@@ -1,22 +1,21 @@
-<script setup lang='ts'>
+<script setup lang="ts">
 import { formatTimefromNow } from '@/common/utils/date';
 import Empty from '../empty.vue';
+import { INotificationList } from '@/types/type';
 
-defineProps<{ data: INotificationList[], total: number }>()
-defineEmits(['readNotification', 'queryData'])
-
+defineProps<{ data: INotificationList[]; total: number }>();
+defineEmits(['readNotification', 'queryData']);
 </script>
 
 <template>
   <div class="crm">
-    <div class="list" v-if="data.length">
+    <div v-if="data.length" class="list">
       <ul class="flex notification-list list-style-init">
         <li v-for="notif in data" class="pointer notification-item" @click="$emit('readNotification', notif)">
-          <el-badge class="is-read" v-if="!notif.read" value="new"></el-badge>
+          <el-badge v-if="!notif.read" class="is-read" value="new" />
           <div class="comment-info">
-            <el-image :lazy="true" :src="notif.commentUserInfo.avatar" fit="cover" loading="lazy" alt="头像"
-              class="mr-10 avatar" />
-            <span class="gray">{{ notif.commentUserInfo.nickName }}</span>
+            <el-image :lazy="true" :src="notif.commentUserInfo.avatar_url" fit="cover" loading="lazy" alt="头像" class="mr-10 avatar" />
+            <span class="gray">{{ notif.commentUserInfo.user_name }}</span>
             <p class="line-2">
               <span class="gray">{{ formatTimefromNow(notif.commentContent.createTime) }}回复你：</span>
               {{ notif.commentContent.content }}
@@ -27,32 +26,34 @@ defineEmits(['readNotification', 'queryData'])
               <span>来自：</span>
               <span>{{ formatTimefromNow(notif.replyContent.createTime) }}发布的</span>
             </div>
-            <el-image :lazy="true" :src="notif.replyUserInfo.avatar" fit="cover" loading="lazy" alt="头像"
-              class="mr-10 avatar" />
-            <span>{{ notif.replyUserInfo.nickName }}</span>
+            <el-image :lazy="true" :src="notif.replyUserInfo.avatar_url" fit="cover" loading="lazy" alt="头像" class="mr-10 avatar" />
+            <span>{{ notif.replyUserInfo.user_name }}</span>
             <p v-if="notif.replyContent.content" class="line-2">
               <span>评论内容：</span>
               {{ notif.replyContent.content }}
             </p>
-            <p v-else class="line-2">
-            <h3>{{ notif.replyContent.title }}</h3>
+            <!-- <p
+              v-else
+              class="line-2"
+            /></p><h3>{{ notif.replyContent.title }}</h3>
             .....
-            </p>
+            </p> -->
           </div>
         </li>
       </ul>
-      <el-pagination 
-        layout="prev, pager, next" 
-        style="padding-top: 15px;"
-        @current-change="(page: number) => $emit('queryData', page)" 
+      <el-pagination
+        layout="prev, pager, next"
+        style="padding-top: 15px"
         :page-size="10"
-        :total="total" />
+        :total="total"
+        @current-change="(page: number) => $emit('queryData', page)"
+      />
     </div>
     <Empty v-else title="这是暂时还是空的~" />
   </div>
 </template>
 
-<style lang='scss' scoped>
+<style lang="scss" scoped>
 .crm {
   .notification-list {
     max-height: 600px;
@@ -74,7 +75,7 @@ defineEmits(['readNotification', 'queryData'])
       }
 
       .gray {
-        opacity: .6;
+        opacity: 0.6;
       }
 
       .reply-info {

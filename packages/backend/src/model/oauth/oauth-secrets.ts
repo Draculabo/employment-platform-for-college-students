@@ -36,9 +36,9 @@ export class OAuthSecretsModel extends Content {
   })
   client_secret: string;
 
-  @Index('oauth_secrets_is_delete_index')
-  @Column({
-    default: false,
-  })
-  is_delete: boolean;
+  // @Index('oauth_secrets_is_delete_index')
+  // @Column({
+  //   default: false,
+  // })
+  // is_delete: boolean;
 }

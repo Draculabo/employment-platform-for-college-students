@@ -1,29 +1,40 @@
-<script setup lang='ts'>
+<script setup lang="ts">
 import { formatTimefromNow } from '@/common/utils/date';
-import UserTooltip from '@/components/userTooltip.vue'
+import UserTooltip from '@/components/userTooltip.vue';
+import { UserBaseInfo } from '@/services/modules/user';
+import { useRouter } from 'vue-router';
+import useUserStore from '@/store/modules/user';
 
-defineProps<{ userInfo: IUserInfo, publishTime?: string }>();
+const props = defineProps<{
+  userInfo: UserBaseInfo;
+  publishTime?: string;
+}>();
+const router = useRouter();
+const gotoUserDetail = () => {
+  console.log(props);
 
+  router.push(`/user/profile/${props.userInfo.user_id}`);
+};
 </script>
 
 <template>
-  <div class="user-head">
-    <img class="pointer mr-10" :src="userInfo?.avatar" />
-    <user-tooltip class="user-tooltip" :userInfo='userInfo' />
+  <div class="user-head flex" @click="gotoUserDetail">
+    <img class="pointer mr-5" :src="userInfo?.avatar_url" />
+    <user-tooltip class="user-tooltip" :user-info="userInfo" />
     <div class="user-info">
-      <span class="user-name">{{ userInfo?.nickName }}</span>
+      <span class="user-name">{{ userInfo?.username }}</span>
       <div class="date-school">
         <span v-if="publishTime" class="datetime mr-20">{{ formatTimefromNow(publishTime as string) }}发布</span>
-        <span class="school">
-          <i class="iconfont icon-school"></i>
+        <!-- <span class="school">
+          <i class="iconfont icon-school" />
           {{ userInfo?.school }} - {{ userInfo?.graduation }}届
-        </span>
+        </span> -->
       </div>
     </div>
   </div>
 </template>
 
-<style lang='scss' scoped>
+<style lang="scss" scoped>
 .user-head {
   margin-bottom: 10px;
   color: #333;
@@ -34,7 +45,7 @@ defineProps<{ userInfo: IUserInfo, publishTime?: string }>();
     height: 35px;
     border-radius: 5px;
 
-    &:hover+.user-tooltip {
+    &:hover + .user-tooltip {
       display: block;
     }
   }
@@ -54,7 +65,7 @@ defineProps<{ userInfo: IUserInfo, publishTime?: string }>();
 
   .user-info {
     display: inline-block;
-    font-size: .9rem;
+    font-size: 0.9rem;
 
     .date-school {
       color: #888;

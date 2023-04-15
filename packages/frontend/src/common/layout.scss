@@ -1,0 +1,7 @@
+@import './variables.scss';
+@mixin userContainer {
+  max-width: 1200px;
+  min-height: calc(100vh - $header);
+  margin: 0 auto;
+  background: #fff;
+}

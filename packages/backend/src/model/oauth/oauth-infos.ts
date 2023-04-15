@@ -69,9 +69,9 @@ export class OAuthInfosModel extends Content {
   })
   callbacks_url: string;
 
-  @Index('oauth_infos_is_delete_index')
-  @Column({
-    default: false,
-  })
-  is_delete: boolean;
+  // @Index('oauth_infos_is_delete_index')
+  // @Column({
+  //   default: false,
+  // })
+  // is_delete: boolean;
 }

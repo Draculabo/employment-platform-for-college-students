@@ -206,6 +206,10 @@ type Config = {
       };
     };
   };
+  chatgpt: {
+    secret: string;
+    proxy: string;
+  };
 };
 
 interface SMSConfig {

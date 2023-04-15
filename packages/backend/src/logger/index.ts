@@ -1,5 +1,5 @@
 import { Logger, LoggerContext } from './Logger';
-import { LoggerAPI, LoggerAPIv2, LoggerServer, LoggerService } from './LogContext';
+import { LoggerAPI, LoggerAPIv2, LoggerSMS, LoggerServer, LoggerService } from './LogContext';
 import os from 'os';
 import { LoggerAbstractPlugin } from './plugins/LoggerAbstractPlugin';
 const baseContext = {
@@ -51,5 +51,15 @@ export const createLoggerService = <T extends string>(
       ...baseContext,
     },
     loggerPlugins as LoggerAbstractPlugin<LoggerService<T>>[]
+  );
+};
+export const createLoggerSMS = <R extends LoggerContext>(context: Partial<LoggerSMS & R>): Logger<LoggerSMS & R> => {
+  return new Logger<LoggerSMS & R>(
+    'sms',
+    {
+      ...context,
+      ...baseContext,
+    },
+    loggerPlugins as LoggerAbstractPlugin<LoggerSMS & R>[]
   );
 };

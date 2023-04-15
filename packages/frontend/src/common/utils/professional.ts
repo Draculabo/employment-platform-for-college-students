@@ -21,4 +21,26 @@ export const professionals = [
   '芯片研发',
   '软件研发',
   '公务员',
-]
+];
+export const articleTypeList = [
+  {
+    label: '全部',
+    value: -1,
+  },
+  {
+    label: '校招',
+    value: 0,
+  },
+  {
+    label: '社招',
+    value: 1,
+  },
+  {
+    label: '实习',
+    value: 2,
+  },
+  {
+    label: '技术分享',
+    value: 3,
+  },
+];

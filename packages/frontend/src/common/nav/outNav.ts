@@ -1,24 +1,19 @@
 const outNav = [
   {
-    name: '简历制作',
+    name: '简历编写',
     path: '/theme',
     tooltip: false,
   },
   {
-    name: '求职社区',
+    name: '交流社区',
     path: '/community',
-    tooltip: false
+    tooltip: false,
   },
   {
-    name: '语法助手',
+    name: '帮助中心',
     path: '/syntax/helper',
-    tooltip: false
+    tooltip: false,
   },
-  {
-    name: '更新内容',
-    path: '/update/line',
-    tooltip: false
-  }
-]
+];
 
 export default outNav;

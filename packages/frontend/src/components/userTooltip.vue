@@ -1,34 +1,35 @@
-<script setup lang='ts'>
-defineProps<{ userInfo: IUserInfo }>();
+<script setup lang="ts">
+import { UserBaseInfo } from '@/services/modules/user';
+
+defineProps<{
+  userInfo: UserBaseInfo;
+}>();
 </script>
 
 <template>
   <div class="user-tooltip flex content-card">
     <div class="head flex">
-      <img class="mr-10" :src="userInfo.avatar" alt="头像" />
+      <img class="mr-10" :src="userInfo.avatar_url" alt="头像" />
       <strong class="nick-name">
-        {{ userInfo.nickName }}
+        {{ userInfo.username }}
       </strong>
     </div>
-    <p><strong>性别：</strong>{{ userInfo.sex }}生</p>
-    <p>
+    <!-- <p><strong>性别：</strong>{{ userInfo.gender }}生</p> -->
+    <!-- <p>
       <strong>院校：</strong>
       <span>{{ userInfo.school }} - </span>
       <span>{{ userInfo.graduation }}届</span>
-
-    </p>
-    <p><strong>求职意向：</strong>{{ userInfo.professional }}</p>
-    <p><strong>所在地区：</strong>{{ userInfo.origin }}</p>
+    </p> -->
+    <!-- <p><strong>求职意向：</strong>{{ userInfo.professional }}</p>
+    <p><strong>所在地区：</strong>{{ userInfo.origin }}</p> -->
   </div>
 </template>
 
-<style lang='scss' scoped>
+<style lang="scss" scoped>
 .user-tooltip {
-  width: 200px;
-  min-height: 200px;
-  font-size: .8rem;
+  font-size: 0.8rem;
   color: #666;
-  background-color: #8EC5FC;
+  background-color: #8ec5fc;
   background-image: linear-gradient(62deg, white 0%, #5fd5f5 200%);
 
   p {
@@ -37,7 +38,6 @@ defineProps<{ userInfo: IUserInfo }>();
 
   .head {
     justify-content: space-between;
-    align-items: flex-end;
 
     .nick-name {
       color: orange;

@@ -3,13 +3,12 @@ import { Type } from '@sinclair/typebox';
 import { ConfigSchema } from '../../dao/type';
 export const articleSchema = {
   body: Type.Object({
-    config: ConfigSchema,
-    article_id: Type.String(),
-    article_type: Type.Enum(ArticleType),
-    title: Type.String(),
-    user_id: Type.String(),
-    created_at: Type.String(),
-    updated_at: Type.String(),
+    config: Type.Optional(ConfigSchema),
+    article_id: Type.Optional(Type.String()),
+    article_type: Type.Optional(Type.Enum(ArticleType)),
+    title: Type.Optional(Type.String()),
+    user_id: Type.Optional(Type.String()),
+    keyword: Type.Optional(Type.String()),
   }),
 };
 export const deleteArticleSchema = {
@@ -19,8 +18,10 @@ export const deleteArticleSchema = {
 };
 export const insertArticleSchema = {
   body: Type.Object({
+    title: Type.String(),
     content: Type.String(),
-    user_id: Type.String(),
+    article_type: Type.Optional(Type.Enum(ArticleType)),
+    user_id: Type.Optional(Type.String()),
   }),
 };
 export const updateArticleSchema = {
@@ -29,10 +30,10 @@ export const updateArticleSchema = {
       article_id: Type.String(),
     }),
     updated: Type.Object({
-      article_type: Type.Enum(ArticleType),
-      content: Type.String(),
-      share_number: Type.Number(),
-      title: Type.String(),
+      article_type: Type.Optional(Type.Enum(ArticleType)),
+      content: Type.Optional(Type.String()),
+      share_number: Type.Optional(Type.Number()),
+      title: Type.Optional(Type.String()),
     }),
   }),
 };

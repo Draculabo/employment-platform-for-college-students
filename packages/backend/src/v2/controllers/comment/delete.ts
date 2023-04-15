@@ -1,5 +1,5 @@
 import { FastifyRequestTypebox, Response } from '@/types/Server';
-import CommentInfoService from '@/v2/services/comment/info';
+import CommentInfoService from '@/v2/services/comment/comment';
 import type {
   insertCommentSchema,
   CommentListRequestType,

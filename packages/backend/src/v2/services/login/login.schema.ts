@@ -7,3 +7,9 @@ export const LoginSchema = {
   }),
 };
 export type LoginRequestType = Static<typeof LoginSchema.body>;
+
+export const LoginPhoneSchema = {
+  body: Type.Object({
+    phone: Type.String(),
+  }),
+};

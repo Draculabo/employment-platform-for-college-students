@@ -1,19 +1,23 @@
-import { onMounted, watch } from 'vue';
-import { ref } from 'vue';
-import useUserStore from "@/store/modules/user"
+import { onMounted, watch, ref } from 'vue';
+
+import useUserStore from '@/store/modules/user';
 import { queryNotification, updateNotificationState } from '@/services/modules/notification';
 import { useRouter } from 'vue-router';
 import { errorMessage } from '@/common/message';
+import { INotificationList, IResponse } from '@/types/type';
 
 export function useNotificationList(toggleMessageModal: Function) {
-  const { userInfo } = useUserStore(), router = useRouter(), commentTotal = ref(0), total = ref(0);
+  const { userInfo } = useUserStore(),
+    router = useRouter(),
+    commentTotal = ref(0),
+    total = ref(0);
   const conditions = ref({ pageNum: 1, pageSize: 10, uid: 0 });
   const data = ref<INotificationList[]>([]);
 
   async function queryData() {
     conditions.value.uid = userInfo.uid;
-    const res = await queryNotification(conditions.value) as IResponse<INotificationList[]>;
-    if (res.code == 200) {
+    const res = (await queryNotification(conditions.value)) as IResponse<INotificationList[]>;
+    if (res.status === 0) {
       data.value = res.data as INotificationList[];
       total.value = res.total as number;
       commentTotal.value = (res as any).commentTotal as number;
@@ -25,8 +29,8 @@ export function useNotificationList(toggleMessageModal: Function) {
     router.replace({ path: '/community/detail', query: { articleId, posterCommentId } });
     toggleMessageModal();
     if (read != 1) {
-      const res = await updateNotificationState({ commentId }) as IResponse<unknown>;
-      if (res.code == 200) queryData();
+      const res = (await updateNotificationState({ commentId })) as IResponse<unknown>;
+      if (res.status === 0) queryData();
     }
   }
   function pageNumChange(page: number) {
@@ -35,15 +39,18 @@ export function useNotificationList(toggleMessageModal: Function) {
   }
   onMounted(() => {
     if (userInfo.uid != 0) queryData();
-  })
-  watch(() => userInfo.uid, () => {
-    if (userInfo.uid != 0) queryData();
-  })
+  });
+  watch(
+    () => userInfo.uid,
+    () => {
+      if (userInfo.uid != 0) queryData();
+    }
+  );
   return {
     data,
     total,
     commentTotal,
     readNotification,
-    pageNumChange
-  }
+    pageNumChange,
+  };
 }

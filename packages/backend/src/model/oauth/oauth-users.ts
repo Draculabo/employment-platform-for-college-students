@@ -26,9 +26,9 @@ export class OAuthUsersModel extends Content {
   })
   scopes: string;
 
-  @Index('oauth_users_is_delete_index')
-  @Column({
-    default: false,
-  })
-  is_delete: boolean;
+  // @Index('oauth_users_is_delete_index')
+  // @Column({
+  //   default: false,
+  // })
+  // is_delete: boolean;
 }

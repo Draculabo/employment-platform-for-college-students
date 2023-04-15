@@ -1,4 +1,3 @@
-
 export default `::: headStart
 ::: start
 ## 小新 **大数据开发工程师**
@@ -8,9 +7,8 @@ icon:user 男 / 2000.01.01
 :::
 icon:phone 155xxxxxx06
 [icon:email example@163.com](xxxxxxxx@163.com)
-::: 
-[icon:gitee https://gitee.com/codeleilei](https://gitee.com/codeleilei)
-[icon:github https://github.com/acmenlei](https://github.com/acmenlei)
+:::
+[icon:github https://github.com/xiaoxin](https://github.com/xiaoxin)
 ::: end
 :::
 ![个人头像](https://avatars.githubusercontent.com/u/54731221?v=4)
@@ -57,4 +55,4 @@ icon:phone 155xxxxxx06
 ## icon:user 自我评价 About me
 1. 本人热心诚恳、乐观向上，有良好的思想品德和职业素质，工作认真负责，爱好是看美女。
 2. 通过在学生会任职的经历，锻炼出了良好的组织协调能力，善于调动团队成员的工作热情与积极性。
-3. 丰富的在外兼职经历使自己拥有较强的亲和力与责任心，并有良好的团队协作和敬业精神。`
+3. 丰富的在外兼职经历使自己拥有较强的亲和力与责任心，并有良好的团队协作和敬业精神。`;

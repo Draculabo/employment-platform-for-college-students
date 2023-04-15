@@ -56,16 +56,17 @@ export class UserUploadAvatarService {
   }
 
   public async finish(fileUUID: string): Promise<void> {
+    debugger;
     const { fileName } = await this.getFileInfoByRedis(fileUUID);
 
     const ossFilePath = CloudStorageUploadService.generateOSSFilePath(fileName, fileUUID);
     await this.oss.assertExists(ossFilePath);
 
-    const complianceImage = useOnceService('complianceImage', this.ids);
-    await complianceImage.assertImageNormal(ossFilePath);
+    // const complianceImage = useOnceService('complianceImage', this.ids);
+    // await complianceImage.assertImageNormal(ossFilePath);
 
     const userInfoSVC = new UserInfoService(this.ids, this.DBTransaction, this.userUUID);
-    const { avatar_url: oldAvatarURL } = await userInfoSVC.info();
+    const { avatar_url: oldAvatarURL } = await userInfoSVC.baseInfo();
 
     const userUpdateSVC = new UserUpdateService(this.ids, this.DBTransaction, this.userUUID);
     await userUpdateSVC.avatarURL(`${this.oss.domain}/${ossFilePath}`);
@@ -81,7 +82,6 @@ export class UserUploadAvatarService {
         });
       });
     }
-
     await RedisService.del(RedisKey.userAvatarFileInfo(this.userUUID, fileUUID)).catch((error) => {
       this.logger.warn('remove avatar info failed in redis', {
         ...parseError(error),

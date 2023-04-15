@@ -1,7 +1,7 @@
 {
   "configurations": [
     {
-      "name": "debug project",
+      "name": "debug backend",
       "request": "launch",
       "runtimeArgs": [
         "--filter",
@@ -38,6 +38,23 @@
       "console": "integratedTerminal",
       "skipFiles": [
         "<node_internals>/**"
+      ],
+      "type": "node"
+    },
+    {
+      "name": "debug frontend",
+      "request": "launch",
+      "runtimeExecutable": "pnpm",
+      "cwd": "${workspaceFolder}/packages/frontend/",
+      "runtimeArgs": [
+        "--filter",
+        "frontend",
+        "dev"
+      ],
+      "console": "integratedTerminal",
+      "resolveSourceMapLocations": [
+        "${workspaceFolder}/**",
+        "!**/node_modules/**"
       ],
       "type": "node"
     }
