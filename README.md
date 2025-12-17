@@ -1,112 +1,74 @@
-<h1 align="center">
-  <a href="https://github.com/Draculabo/boom">
-    <!-- Please provide path to your logo here --> 
-  </a>
-</h1>
-<div align="center">
-  A Vue.js 3 UI Library
-  <br />
-  <a href="https://github.com/Draculabo/boom/issues/new?assignees=&labels=bug&template=01_BUG_REPORT.md&title=bug%3A+">Report a Bug</a>
-  ·
-  <a href="https://github.com/Draculabo/boom/issues/new?assignees=&labels=enhancement&template=02_FEATURE_REQUEST.md&title=feat%3A+">Request a Feature</a>
-  .
-  <a href="https://github.com/Draculabo/boom/issues/new?assignees=&labels=question&template=04_SUPPORT_QUESTION.md&title=support%3A+">Ask a Question</a>
-</div>
-<div align="center">
-</div>
+# Employment Platform for College Students
 
-<details open="open">
-<summary>Table of Contents</summary>
+> A comprehensive employment platform designed for college students, featuring a modern collaborative environment.
 
-- [About](#about)
-  - [Built With](#built-with)
-- [Getting Started](#getting-started)
-  - [Prerequisites](#prerequisites)
-  - [Installation](#installation)
-- [Usage](#usage)
-- [Roadmap](#roadmap)
-- [Support](#support)
-- [Project assistance](#project-assistance)
-- [Contributing](#contributing)
-- [Authors & contributors](#authors--contributors)
-- [Security](#security)
-- [License](#license)
-- [Acknowledgements](#acknowledgements)
+This project is a monorepo containing both the frontend and backend services for the Employment Platform. It leverages modern web technologies to provide a responsive and feature-rich experience.
 
-</details>
+## Features
 
----
+### Frontend (`packages/frontend`)
+- **Framework**: Vue 3 with Vite
+- **UI Component Library**: Element Plus
+- **Styling**: TailwindCSS & SCSS
+- **State Management**: Pinia
+- **Editors**: Integrated ByteMD and TextBus for rich text editing.
+- **Utilities**: `vueuse`, `lodash`, `axios`.
 
-## About
-
->  For learning only, not for commercial use.
-
-### Built With
-
-> - vue3
-> - typescript 
-> - vite3
-> - vitepress
-> - sass
+### Backend (`packages/backend`)
+- **Framework**: Fastify
+- **Database**:
+    - MySQL (via TypeORM)
+    - Redis (via `ioredis`) for caching and session management.
+    - MongoDB (via `mongodb`)
+- **AI Integration**: Integration with ChatGPT and Bing Chat for intelligent features.
+- **Third-party Services**:
+    - Alibaba Cloud OSS (Object Storage Service)
+    - Alibaba Cloud SMS
+- **API Documentation**: Fastify Swagger
 
 ## Getting Started
 
 ### Prerequisites
 
+- [Node.js](https://nodejs.org/) (v16+ recommended)
+- [pnpm](https://pnpm.io/) (Package Manager)
+
 ### Installation
 
-```
+Install all dependencies for the monorepo:
+
+```bash
 pnpm install
 ```
 
-## Usage
+### Development
 
+To start the development servers:
+
+**Frontend**:
+```bash
+pnpm front
+# Runs `pnpm --filter frontend dev`
 ```
-pnpm --filter boom-ui dev
+
+**Backend**:
+```bash
+pnpm back
+# Runs `pnpm --filter backend start`
 ```
 
+**Backend (Node Mode)**:
+```bash
+pnpm back:node
+# Runs `pnpm --filter backend start:node`
+```
 
+## Project Structure
 
-## Roadmap
-
-See the [open issues](https://github.com/Draculabo/boom/issues) for a list of proposed features (and known issues).
-
-- [Top Feature Requests](https://github.com/Draculabo/boom/issues?q=label%3Aenhancement+is%3Aopen+sort%3Areactions-%2B1-desc) (Add your votes using the 👍 reaction)
-- [Top Bugs](https://github.com/Draculabo/boom/issues?q=is%3Aissue+is%3Aopen+label%3Abug+sort%3Areactions-%2B1-desc) (Add your votes using the 👍 reaction)
-- [Newest Bugs](https://github.com/Draculabo/boom/issues?q=is%3Aopen+is%3Aissue+label%3Abug)
-
-## Support
-
-Reach out to the maintainer at one of the following places:
-
-- [GitHub issues](https://github.com/Draculabo/boom/issues/new?assignees=&labels=question&template=04_SUPPORT_QUESTION.md&title=support%3A+)
-- Contact options listed on [this GitHub profile](https://github.com/Draculabo)
-
-## Project assistance
-
-If you want to say **thank you** or/and support active development of boom:
-
-- Add a [GitHub Star](https://github.com/Draculabo/boom) to the project.
-- Tweet about the boom.
-- Write interesting articles about the project on [Dev.to](https://dev.to/), [Medium](https://medium.com/) or your personal blog.
-
-Together, we can make boom **better**!
-
-## Contributing
-
-First off, thanks for taking the time to contribute! Contributions are what make the open-source community such an amazing place to learn, inspire, and create. Any contributions you make will benefit everybody else and are **greatly appreciated**.
-
-
-Please read [our contribution guidelines](CONTRIBUTING.md), and thank you for being involved!
-
-## Authors & contributors
-
-The original setup of this repository is by [Alexey Potapov](https://github.com/Draculabo).
-
-For a full list of all authors and contributors, see [the contributors page](https://github.com/Draculabo/boom/contributors).
+- `packages/frontend`: Source code for the web client.
+- `packages/backend`: Source code for the server-side API.
+- `package.json`: Root configuration and workspace scripts.
 
 ## License
 
-This project is licensed under the **MIT license**.
-
-See [LICENSE](LICENSE) for more information.
+This project is licensed under the MIT License.
